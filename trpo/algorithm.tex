@@ -1,0 +1,13 @@
+Policy iteration algorithm guarenteeing non-decreasing expected return \( \eta \)
+
+Initialize \( \pi_0 \).
+<b>for</b> \( i = 0, 1, 2 \ldots \) until convergence <b>do</b>
+	Compute all advantage values \( A_{\pi_i}(s, a) \).
+	Solve the constrained optimization problem
+	\( \pi_{i+1} = \underset{\pi}{\text{argmax}}[L_{\pi_i}(\pi) - CD_{KL}^{max}(\pi_i, \pi)] \)
+		where \( C = 4\epsilon\gamma / (1 - \gamma)^2 \)
+		and \[ L_{\pi_i}(\pi) = \eta(\pi_i) + \underset{s}{\sum}{\rho_{\pi_i}(s)\underset{a}{\sum}{\pi(a \mid s)A_{\pi_i}(s, a)}} \]
+	approximated by
+	\[ \underset{\theta}{\text{maximize }}{\mathbb{E}_{s,a \sim \rho_{\theta_\text{old}}}\left[ \frac{\pi_\theta(a \mid s)}{\pi_{\theta_\text{old}}(a \mid s)} A_{\theta_\text{old}}(s, a) \right]} \]
+		subject to \( \mathbb{E}_{s \sim \rho_{\theta_\text{old}}}[D_{KL}(\pi_{\theta_\text{old}}(\cdot \mid s) \| \pi_\theta(\cdot \mid s)] \leq \delta \).
+<b>end for</b>

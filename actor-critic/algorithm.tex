@@ -1,0 +1,19 @@
+One-step Actor-Critic (episodic), for estimating \( \pi_\theta \approx \pi_* \)
+
+Input: a differentiable policy parameterization \( \pi(a \mid s, \mathbf\theta) \)
+Input: a differentiable state-value function parameterization \( \hat{v}(s, \mathbf{w}) \)
+Algorithm parameters: step sizes \( \alpha^\mathbf\theta > 0 , \alpha^\mathbf{w} > 0 \)
+Initialize policy parameter \( \mathbf\theta \in \mathbb{R}^{d'} \) and state-value weights \( \mathbf{w} \in \mathbb{R}^d \) (e.g., to \( \mathbf{0} \))
+
+Loop forever (for each episode):
+	Initialize \( S \) (first state of episode)
+	\( I \leftarrow 1 \)
+	Loop while \( S \) is not terminal (for each time step):
+		\( A \sim \pi(\cdot \mid S, \theta) \)
+		Take action \( A \) observe \( S', R \)
+		\( \delta \leftarrow R +  \hat{v}(S', \mathbf{w}) - \hat{v}(S, \mathbf{w}) \)
+			(if \( S' \) is terminal, then \( \hat{v}(S', \mathbf{w}) \doteq 0 \))
+		\( \mathbf{w} \leftarrow \mathbf{w} + \alpha^\mathbf{w}\delta\nabla{\hat{v}(S, \mathbf{w})} \)
+		\( \mathbf\theta \leftarrow \mathbf\theta + \alpha^\mathbf\theta I \delta \nabla{\ln{\pi(A \mid S, \mathbf\theta)}} \)
+		\( I \leftarrow \gamma I \)
+		\( S \leftarrow S' \)

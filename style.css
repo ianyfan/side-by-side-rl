@@ -1,0 +1,191 @@
+:root {
+  --theme-hue: 255;
+}
+
+html {
+  overflow-y: auto;
+  scroll-snap-type: y;
+
+  background: #fefefe;
+  color: #111;
+}
+
+body {
+  padding: 1em;
+  margin: 0;
+
+  background: hsl(var(--theme-hue), 25%, 99%);
+}
+
+h1 {
+  scroll-snap-align: end;
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+
+  background: hsl(var(--theme-hue), 25%, 95%);
+}
+
+nav > h2 {
+  padding: 0.5em;
+  margin: 0;
+
+  background: hsl(var(--theme-hue), 50%, 50%);
+  color: #eee;
+}
+
+menu {
+  flex-grow: 1;
+
+  padding-left: 0;
+  margin: 0;
+  overflow-y: auto;
+
+  list-style: none;
+}
+
+menu a {
+  display: block;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 0.25em 0.5em;
+
+  text-decoration: none;
+
+  transition: background 0.1s;
+}
+
+.current {
+  background: hsl(var(--theme-hue), 25%, 90%);
+}
+
+menu a:hover {
+  background: hsl(var(--theme-hue), 25%, 85%);
+}
+
+menu a:focus {
+  background: hsl(var(--theme-hue), 25%, 82.5%);
+}
+
+menu a:active {
+  background: hsl(var(--theme-hue), 25%, 80%);
+  color: unset;
+}
+
+@media (min-width: 1200px) {
+  body {
+    margin-left: 20vw;
+  }
+
+  nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    top: 0;
+
+    width: 20vw;
+  }
+}
+
+h2 > a {
+  display: inline-block;
+  width: 100%;
+
+  color: unset;
+
+  text-decoration: none;
+}
+
+article > h2 > a::after {
+  content: " 🔗";
+
+  opacity: 0%;
+
+  transition: opacity 0.1s;
+}
+
+
+h2:hover > a::after {
+  opacity: 100%;
+}
+
+section {
+  display: grid;
+  grid-auto-flow: column;
+  grid-template-columns: [alg] 1fr [code] 1fr;
+  max-height: calc(100vh - 2em);
+  border-bottom: 3px double black;
+  border-top: 1px solid black;
+  overflow: auto;
+  scroll-snap-align: center;
+
+  background: hsl(var(--theme-hue), 75%, 99%);
+}
+
+h3 {
+  grid-column: alg;
+  margin: 0;
+}
+
+h3,
+.alg {
+  font-family: Latin Modern Math;
+}
+
+.alg,
+.code {
+  display: contents;
+}
+
+.alg > li {
+  grid-column: alg;
+}
+
+.code > li {
+  grid-column: code;
+}
+
+.alg > :nth-child(2n+1),
+.code > :nth-child(2n) {
+  background: hsl(var(--theme-hue), 75%, 98%);
+}
+
+.code > :first-child {
+  justify-content: end;
+}
+
+.alg > li,
+.code > li {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 1px 2px;
+}
+
+li > p,
+li > pre {
+  margin-bottom: 0;
+  margin-top: 0;
+}
+
+.indent-1 {
+  margin-left: 1em;
+}
+
+.indent-2 {
+  margin-left: 2em;
+}
+
+.indent-3 {
+  margin-left: 3em;
+}
+
+math {
+  font-size: 1.5em;
+}
+
+math:not(:only-child) {
+  display: inline;
+}

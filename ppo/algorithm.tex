@@ -1,0 +1,15 @@
+PPO, Actor-Critic Style
+
+<b>for</b> iteration \( = 1, 2, \ldots \) <b>do</b>
+	<b>for</b> actor \( = 1, 2, \ldots, N \) <b>do</b>
+		Run policy \( \pi_{\theta_\text{old}} \) in environment for \( T \) timesteps
+		Compute advantage estimates \( \hat{A}_1, \ldots, \hat{A}_T \)
+	<b>end for</b>
+	Optimize surrogate \( L \) wrt \( \theta \), with \( K \) epochs and minibatch size \( M \leq NT \)
+		where \( r_t(\theta) = \frac{\pi_\theta(a_t \mid s_t)}{\pi_{\theta_\text{old}}(a_t \mid s_t)} \)
+		and \( L^{CLIP}(\theta) = \hat\mathbb{E}_t[\text{min}(r_t(\theta)\hat{A_t}, \text{clip}(r_t(\theta), 1 - \epsilon, 1 + \epsilon) \hat{A_t})] \)
+		and \( L_t^{VF} = (V_\theta(s_t) - V_t^\text{targ})^2 \)
+		and \( S \) denotes an entropy bonus
+		and \( L_t^{CLIP+VF+S}(\theta) = \hat\mathbb{E}_t[L_t^{CLIP}(\theta) - c_1 L_t^{VF}(\theta) + c_2 S[\pi_\theta](s_t)] \)
+	\( \theta_\text{old} \leftarrow \theta \)
+<b>end for</b>

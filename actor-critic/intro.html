@@ -1,0 +1,14 @@
+Actor-Critic
+<p>
+  Actor-critic methods have been studied from as early as 1977
+  (<cite><a href="//www.sciencedirect.com/science/article/pii/S0019995877903540">An adaptive optimal controller for discrete-time Markov environments</a></cite>
+  by Witten). The version shown here is from
+  <cite>
+    <a href="//incompleteideas.net/book/the-book.html">Reinforcement Learning: An Introduction</a>
+  </cite>
+  (second edition) by Sutton &amp; Barto.
+  <br>
+  Actor-critic methods introduce a critic that is applied to not only the initial state of a transition, but also the resulting state after the action is applied.
+  <br>
+  The algorithm shown here is an on-policy policy gradient algorithm similar to REINFORCE, but changes the objective by replacing the full return with the one-step temporal-difference residual. It is also a fully online, incremental algorithm, where each transition is processed as they occur and then never revisited.
+</p>

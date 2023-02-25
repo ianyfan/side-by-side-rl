@@ -1,0 +1,16 @@
+Deep Deterministic Policy Gradient (<abbr>DDPG</abbr>)
+<p>
+  DDPG is an off-policy actor-critic algorithm introduced in
+  <cite>
+    <a href="//arxiv.org/abs/1509.02971">Continuous control with deep reinforcement learning</a>
+  </cite>
+  by Lillicrap et al. in 2015. It is based on
+  <cite>
+    <a href="//proceedings.mlr.press/v32/silver14.html">Deterministic Policy Gradient Algorithms</a>
+  </cite>
+  by Silver et al.
+  <br>
+  DDPG adapts the DQN training procedure to environments with high-dimensional continuous action spaces using an actor-critic method. The behavior policy augments the actor policy with a noise process; the paper uses an <a href="//en.wikipedia.org/wiki/Ornstein%E2%80%93Uhlenbeck_process">Ornstein–Uhlenbeck process</a>. The training procedure is otherwise identical to DQN, including the use of a replay buffer and target networks, though it uses "soft" target updates rather than directly copying the weights. DDPG can only be used for environments with continuous action spaces.
+  <br>
+  The paper also mentions using batch normalization to normalize the scale of different environment observation spaces, but that is not pertinent to the training algorithm itself.
+</p>

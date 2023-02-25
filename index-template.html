@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Side-by-side RL</title>
+    <link href="style.css" rel="stylesheet">
+    <script async src="script.js"></script>
+  </head>
+  <body>
+    <article>
+      <h1>Side-by-side RL</h1>
+      <p>
+        To improve at reinforcement learning, people are often told that one good way is to find a research paper, read it, and then implement the algorithm described in it.
+        This would be relatively straightforward if papers clearly outlined their training procedure (which they sometimes don't) and all of their implementation details (which they often don't).
+        <a href="//amid.fish/reproducing-deep-rl">Unfortunately, it isn't.</a>
+        Consequently, implementations are riddled with little tricks that are not related to the algorithm, just to get it to work.
+        Trying to refer back to it, especially after some time, results in confusion about how the algorithm relates to the code, even with <a href="//spinningup.openai.com/en/latest/">help</a>.
+      </p>
+      <p>
+        This website is an attempt to aid with the last problem by laying out various popular RL algorithms, transcribed exactly from their papers, side-by-side and line-by-line with their exact implementation in code.
+        Each algorithm corresponds to a code file in the <a href="//github.com/ianyfan/side-by-side-rl">source repository on GitHub</a> that can be used to explore any non-algorithm-related details and to test it.
+      </p>
+      <p>
+        However, these implementations are the minimum possible to work in basic environments and should only be used as reference.
+        They are not <a href="//docs.ray.io/en/latest/rllib/">performant</a> or <a href="//stable-baselines3.readthedocs.io/en/master/">stable</a> and <a href="//docs.cleanrl.dev/">most implementation details</a> are not considered.
+      </p>
+    </article>
+    <nav>
+      <h2><a href="#">Algorithms</a></h2>
+      {% TABLE OF CONTENTS %}
+    </nav>
+  {% ALGORITHMS %}
+  </body>
+</html>

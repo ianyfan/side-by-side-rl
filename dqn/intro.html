@@ -1,0 +1,19 @@
+Deep Q-Networks (<abbr>DQN</abbr>)
+<p>
+  Deep Q-Networks is an off-policy algorithm, introduced in
+  <cite>
+    <a href="//www.cs.toronto.edu/~vmnih/docs/dqn.pdf">Playing Atari with Deep Reinforcement Learning</a>
+  </cite>
+  by Mnih et al. in 2013.
+  <br>
+  DQNs follow the Q-learning training procedure using a deep neural network to estimate the action-value function <i>Q</i>. The behavior policy is ε-greedy. DQN training also utilizes experience replay, which increases data efficiency and, by sampling samples randomly, breaks the correlation between consecutive samples, thus reducing the variance of the updates. Because DQN takes the maximum over its action values, it can only be used for environments with discrete action spaces.
+</p>
+<p>
+  The DQN paper was re-released in 2015 as
+  <cite>
+    <a href="//www.nature.com/articles/nature14236">Human-level control through deep reinforcement learning</a>
+  </cite>
+  by Mnih et al.
+  <br>
+  It introduces the use of a target Q network to make training more stable, as well as gradient clipping.
+</p>

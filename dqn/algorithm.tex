@@ -1,0 +1,17 @@
+Deep Q-learning with Experience Replay
+
+Initialize replay memory \( \mathcal{D} \) to capacity \( N \)
+Initialize action-value function \( Q \) with random weights
+<b>for</b> \( \text{episode} = 1, M \) <b>do</b>
+	Initialise sequence \( s_1 = { x_1 } \) and preprocessed sequenced \( \phi_1 = \phi(s_1) \)
+	<b>for</b> \( t = 1, T \) <b>do</b>
+		With probability \( \epsilon \) select a random action \( a_t \)
+		otherwise select \( a_t = \text{max}_a{Q^*(\phi(s_t), a; \theta)} \)
+		Execute action \( a_t \) in emulator and observe reward \( r_t \) and image \( x_{t+1} \)
+		Set \( s_{t+1} = s_t, a_t, x_{t+1} \) and preprocess \( \phi_{t+1} = \phi(s_{t+1}) \)
+		Store transition \( (\phi_t, a_t, r_t, \phi_{t+1}) \) in \( \mathcal{D} \)
+		Sample random minibatch of transitions \( (\phi_t, a_t, r_t, \phi_{t+1}) \) from \( \mathcal{D} \)
+		Set \( y_j = \begin{cases} r_j & \text{for terminal } \phi_{j+1} \\ r_j + \gamma \text{max}_{a'}{Q(\phi_{j+1}, a'; \theta)} & \text{for non-terminal } \phi_{j+1} \end{cases} \)
+		Perform a gradient descent step on \( (y_j - Q(\phi_j, a_j; \theta))^2 \) according to equation 3
+	<b>end for</b>
+<b>end for</b>

@@ -1,0 +1,16 @@
+Categorical Algorithm
+
+<b>input</b> A transition \( x_t, a_t, r_t, x_{t+1}, \gamma_t \in [0, 1] \)
+	\( Q(x_{t+1}, a) \coloneqq \sum_i{z_i p_i(x_{t+1}, a)} \)
+	\( a^* \leftarrow \operatorname{argmax}_a{Q(x_{t+1}, a)}\, \)
+	\( m_i = 0 \) , \( i \in 0, \ldots, N - 1 \)
+	<b>for</b> \( j \in 0, \ldots, N - 1 \) <b>do</b>
+		<i># Compute the projection of \( \hat\mathcal{T}{z_j} \) onto the support \( \{ z_i \} \)</i>
+		\( \hat\mathcal{T}{z_j} \leftarrow [r_t + \gamma_t z_j]_{V_\mathrm{MIN}}^{V_\mathrm{MAX}} \)
+		\( b_j \leftarrow (\hat\mathcal{T}{z_j} - V_\mathrm{MIN}) / \Delta{z} \) <i>#&nbsp;\( b_j \in [0, N - 1] \)</i>
+		\( l \leftarrow \lfloor b_j \rfloor \), \( u \leftarrow \lceil b_j \rceil \)
+		<i># Distribute probability of \( \hat\mathcal{T}{z_j} \)</i>
+		\( m_l \leftarrow m_l + p_j(x_{t+1}, a^*)(u - b_j) \)
+		\( m_u \leftarrow m_u + p_j(x_{t+1}, a^*)(b_j - l) \)
+	<b>end for</b>
+<b>output</b> \( -\sum_i{m_i \log{p_i(x_t, a_t)}} \) <i># Cross-entropy loss</i>

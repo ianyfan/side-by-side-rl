@@ -1,0 +1,10 @@
+Categorical DQN (C51)
+<p>
+  C51 is an off-policy Q-learning algorithm introduced in
+  <cite>
+    <a href="//arxiv.org/abs/1707.06887">A Distributional Perspective on Reinforcement Learning</a>
+  </cite>
+  by Bellemare, Dabney and Munos in 2017.
+  <br>
+  C51 is a modification of DQN where instead of learning a single value of each state-action, it learns the distribution of the value. For tractability, the value distribution is modelled by a discrete distribution whose support is an equally-spaced set of atoms, which makes the learning procedure similar to multiclass classification. Otherwise, the training procedure is identical to DQN, including using an ε-greedy behavior policy, replay experience and a target network. Like DQN, C51 can only be used for environments with discrete action spaces.
+</p>

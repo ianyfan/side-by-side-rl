@@ -1,0 +1,24 @@
+Asynchronous advantage actor-critic - pseudocode for each actor-learner thread.
+
+<i>// Assume global shared parameter vectors \( \theta \) and \( \theta_\nu \) and global shared counter \( T = 0 \)</i>
+<i>// Assume thread-specific parameter vectors \( \theta' \) and \( \theta_v' \)</i>
+Initialize thread step counter \( t \leftarrow 1 \)
+<b>repeat</b>
+	Reset gradients: \( d\theta \leftarrow 0 \) and \( d\theta_\nu \leftarrow 0 \).
+	Synchronize thread-specific parameters \( \theta' = \theta \) and \( \theta_\nu' = \theta_\nu \)
+	\( t_{start} = t \)
+	Get state \( s_t \)
+	<b>repeat</b>
+		Perform \( a_t \) according to policy \( \pi(a_t \mid s_t ; \theta') \)
+		Receive reward \( r_t \) and new state \( s_{t+1} \)
+		\( t \leftarrow t + 1 \)
+		\( T \leftarrow T + 1 \)
+		<b>until</b> terminal \( s_t \) <b>or</b> \( t - t_{start} == t_{max} \)
+	\( R = \begin{cases}0 & \text{for terminal } s_t \\ V(s_t, \theta_\nu') & \text{for non-terminal } s_t \text{ <i>// Bootstrap from last state</i>}\end{cases} \)
+	<b>for</b> \( i \in {t - 1, \ldots, t_{start} \) <b>do</b>
+		\( R \leftarrow r_i + \gamma R \)
+		Accumulate gradients wrt \( \theta' \): \( d\theta \leftarrow d\theta + \nabla_{\theta'}{\log{\pi(a_i \mid s_i; \theta')}}(R - V(s_i; \theta_\nu')) \)
+		Accumulate gradients wrt \( \theta_\nu' \): \( d\theta_\nu \leftarrow d\theta_\nu + \partial(R - V(s_i; \theta_\nu'))^2 / \partial\theta_\nu' \)
+	<b>end for</b>
+	Perform asynchronous update of \( \theta \) using \( d\theta \) and of \( \theta_\nu \) using \( d\theta_\nu \).
+<b>until</b> \( T > T_{max} \)

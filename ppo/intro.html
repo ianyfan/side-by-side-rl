@@ -1,0 +1,17 @@
+Proximal Policy Optimization (<abbr>PPO</abbr>)
+<p>
+  PPO is an off-policy policy gradient algorithm introduced in
+  <cite>
+    <a href="//arxiv.org/abs/1707.06347">Proximal Policy Optimization Algorithms</a>
+  </cite>
+  by Schulman et al. in 2017.
+  <br>
+  PPO maximizes a surrogate objective consisting of the advantage multiplied by a measure of how different the new policy is from the old policy (by taking multiple policy iteration steps). This ratio is clipped to prevent large/unstable policy changes. (An alternative to clipping is to add a penalty proportional to the <a href="//en.wikipedia.org/wiki/Kullback%E2%80%93Leibler_divergence">KL divergence</a>, but this performed worse in the paper)
+  <br>
+  When the neural network architecture shares parameters between the policy and value function, an extra value function error term is added to the loss function.
+  An extra entropy bonus is also added to encourage exploration.
+  <br>
+  PPO is trained by running a number of actors for a small, fixed number of timesteps, and then performing policy iteration with minibatch stochastic gradient descent for a fixed number of epochs.
+  <br>
+  The algorithm shown here is based on the algorithm presented in the paper, with an expanded definition of the objective.
+</p>
