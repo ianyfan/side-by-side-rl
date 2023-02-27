@@ -130,8 +130,9 @@ h3 {
 }
 
 h3,
+mtext,
 .alg {
-  font-family: Latin Modern Math;
+  font-family: Latin Modern Roman, LMRoman12;
 }
 
 .alg,
@@ -183,6 +184,7 @@ li > pre {
 }
 
 math {
+  font-family: Latin Modern Math;
   font-size: 1.5em;
 }
 
