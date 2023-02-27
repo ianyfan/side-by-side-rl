@@ -25,7 +25,6 @@ class ActorCritic(Algorithm):
         policy_step_size: float,
         critic_step_size: float,
         # LINE
-        epochs: int
     ) -> None:
         # LINE 4
         self.policy, self.critic = self.initialize_networks()
@@ -40,7 +39,7 @@ class ActorCritic(Algorithm):
             lr=critic_step_size
         )
         # LINE 5
-        for _ in range(epochs):
+        while True:
             # LINE 6
             state = torch.as_tensor(self.env.reset()[0])
             # LINE 7
@@ -91,7 +90,6 @@ class ActorCritic(Algorithm):
 
 
 def test(env: Env, callback: Callable[[Algorithm], None] | None) -> None:
-    model = ActorCritic(env, discount_rate=1, callback=callback)
+    model = ActorCritic(env, discount_rate=0.99, callback=callback)
     model.learn(policy_step_size=1e-6,
-                critic_step_size=1e-5,
-                epochs=1000000)
+                critic_step_size=1e-5)

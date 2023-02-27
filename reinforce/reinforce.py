@@ -125,7 +125,7 @@ class REINFORCE:
     env: Env
     discount_rate: float
 
-    callback: Callable[[], None] | None = None
+    callback: Callable[['REINFORCE'], None] | None = None
 
     policy: torch.nn.Module = field(init=False)
     baseline: torch.nn.Module = field(init=False)
@@ -160,7 +160,6 @@ class REINFORCE:
         step_size: float,
         baseline_step_size: float,
         # LINE
-        epochs: int
     ) -> None:
         # LINE 4
         self.policy, self.baseline = self.initialize_networks()
@@ -175,7 +174,7 @@ class REINFORCE:
             lr=baseline_step_size
         )
         # LINE 5
-        for _ in range(epochs):
+        while True:
             # LINE 6
             episode = self.generate_episode()
             T = len(episode)
@@ -214,34 +213,27 @@ class REINFORCE:
                 # END
 
             if self.callback is not None:
-                self.callback()
+                self.callback(self)
 
 
 if __name__ == '__main__':
     runs = 1
     epochs = 200
-    rewards = [[] for _ in range(epochs)]
+    performance = []
 
-    def test_model():
-        global episode
+    def test_model(model) -> None:
+        global epochs
 
         with torch.no_grad():
             p = model.policy.distribution(torch.tensor([1.])).probs[1]
-            value = -2 * (2 - p) / (p * (1 - p))
-            rewards[episode].append(value)
-        #     for _ in range(10):
-        #         rewards[episode].append(
-        #             sum(model.generate_episode().rewards[1:])
-        #         )
-        episode += 1
-        print(episode, value)
+            performance.append(-2 * (2 - p) / (p * (1 - p)))
+
+        epochs -= 1
+        if not epochs:
+            import matplotlib.pyplot as plt
+            plt.plot(performance)
+            plt.show()
 
     env = Corridor()
-    model = REINFORCE(env, 1, test_model)
-    for _ in range(runs):
-        episode = 0
-        model.learn(2 ** -9, 2 ** -6, epochs)
-
-    import matplotlib.pyplot as plt
-    plt.plot([sum(rew) / len(rew) for rew in rewards])
-    plt.show()
+    model = REINFORCE(env, discount_rate=0.99, callback=test_model)
+    model.learn(2 ** -9, 2 ** -6)

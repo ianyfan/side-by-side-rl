@@ -50,8 +50,8 @@ class PPO(Algorithm):
         policy_iteration_steps: int,  # K
         batch_size: int,  # M
         clip_threshold: float,  # ε
-        value_loss_importance: float,  # c_1
-        entropy_loss_importance: float,  # c_2
+        value_loss_importance: float,  # c₁
+        entropy_loss_importance: float,  # c₂
     ) -> None:
         # LINE
         assert horizon % batch_size == 0
