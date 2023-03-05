@@ -164,11 +164,11 @@ class C51(Algorithm):
                 q_loss.backward()
                 q_net_optimizer.step()
 
-                observation = next_observation
-                # END
-
                 if self.timestep % target_network_update_frequency == 0:
                     target_q_net.load_state_dict(self.q_net.state_dict())
+
+                observation = next_observation
+                # END
 
             if self.callback is not None:
                 self.callback(self)
