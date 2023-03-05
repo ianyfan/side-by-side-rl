@@ -13,6 +13,7 @@ import torch
 DEFAULT_HIDDEN_SIZE = 256
 DEFAULT_HIDDEN_LAYERS = 2
 DEFAULT_ACTIVATION = torch.nn.ReLU
+EPSILON = 1e-5
 
 # types
 
@@ -273,10 +274,14 @@ class MLPActorCritic(torch.nn.Module):
         self.action_space = action_space
         self.deterministic = deterministic
         if isinstance(action_space, gymnasium.spaces.Box):
-            if deterministic:
-                output_size = math.prod(action_space.shape)
-            else:
-                output_size = 2 * math.prod(action_space.shape)
+            output_size = math.prod(action_space.shape)
+            if not deterministic:
+                # Unconstrained Standard Deviation
+                # uses softplus to ensure positivity
+                # a global scale is stabler than a state-dependent one
+                self.unconstrained_scale = torch.nn.Parameter(
+                    torch.ones(len(action_space.shape))
+                )
         elif isinstance(action_space, gymnasium.spaces.Discrete):
             assert not tanh_output
             output_size = action_space.n
@@ -304,15 +309,12 @@ class MLPActorCritic(torch.nn.Module):
 
         dist_params = self.actor(self.features_extractor(observation))
         if isinstance(self.action_space, gymnasium.spaces.Box):
-            mean, untransformed_std_dev = (
-                dist_params
-                .reshape(-1, 2, *self.action_space.shape)
-                .transpose(0, 1)  # swap batch dim with params dim
-            )
+            mean = dist_params.reshape(-1, *self.action_space.shape)
+            scale = torch.nn.functional.softplus(self.unconstrained_scale)
             return torch.distributions.Independent(
                 torch.distributions.Normal(
                     mean,
-                    torch.nn.functional.softplus(untransformed_std_dev)
+                    EPSILON + scale  # EPSILON prevents 0 scale
                 ),
                 mean.ndim - 1
             )
