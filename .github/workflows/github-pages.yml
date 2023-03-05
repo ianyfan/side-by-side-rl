@@ -25,14 +25,11 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.11'
+          python-version: '3.x'
       - name: Install dependencies
         run: pip install --requirement build-requirements.txt
       - name: Build site
-        run: |
-          mkdir _site
-          cp --target-directory=_site script.js style.css
-          python build.py >_site/index.html
+        run: python build.py >_site/index.html
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
   deploy:
