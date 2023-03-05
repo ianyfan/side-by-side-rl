@@ -497,3 +497,11 @@ class Rollout:
         if done is not None:
             self._append(self.dones,
                          torch.as_tensor(done, dtype=self.dones.dtype))
+
+    @property
+    def states(self) -> torch.Tensor:
+        return self.observations
+
+    @property
+    def next_states(self) -> torch.Tensor:
+        return self.next_observations
